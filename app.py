@@ -284,7 +284,7 @@ def billingCheckout():
         session["inv_id"] = "RmRam"
 
         postData = request.get_json()
-        message = ["All Clear"]
+        message = []
 
         try:
             orders = postData["orders"]
@@ -529,6 +529,21 @@ def calc_active_inventory():
                   session["max_stock"]) if "max_stock" in session else 0
 
     return {"percentage": percentage, "quantity": quantity, "indivisual": indivisual}
+
+
+@app.route('/scanProduct', methods=["GET", "POST"])
+# @login_required
+def scanProduct():
+    postData = request.get_json()
+    try:
+        product_id = postData["product_id"]
+    except KeyError:
+        return jsonify({"code": False, "message": "Required Fields Empty"})
+    product = db.product.find_one({"product_id": product_id})
+    del product["_id"]
+    if not product:
+        return jsonify({"code": False, "message": "Invalid Product Id"})
+    return jsonify({"code": True, "info": product})
 
 # "wishlist": {"69": 5, "79": 9}
 

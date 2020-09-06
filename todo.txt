@@ -19,6 +19,3 @@ frontend -> React
 
 
 `````````````
-TODO:
-- Create "/scanproduct"
-- Create a dynamic billing layout, and make a plan to connect it to 
