@@ -101,10 +101,10 @@ def signUp():
             return jsonify({"code": False, "message": "Required Fields Empty"})
 
         if password != confirmation:
-            return jsonify(False, {"message": "Passwords don't match"})
+            return jsonify({"code": False, "message": "Passwords don't match"})
 
         if not check_password(password):
-            return jsonify(False, {"message": "Password too weak"})
+            return jsonify({"code": False, "message": "Password too weak"})
 
         # Generating a hash key for the user's password
         hash_pas = generate_password_hash(
@@ -112,11 +112,11 @@ def signUp():
 
         # Checking if the username already exists
         if db.shopkeeper.count_documents({"username": username}) != 0:
-            return jsonify(False, {"message": "Username already exists"})
+            return jsonify({"code": False, "message": "Username already exists"})
 
         # Checking if the email_id already exists
         if db.shopkeeper.count_documents({"email": email}) != 0:
-            return jsonify(False, {"message": "Email already exists"})
+            return jsonify({"code": False, "message": "Email already exists"})
 
         inv_id = find_inv_id(username, first_name)
 
@@ -126,12 +126,17 @@ def signUp():
 
         db.inventory.insert_one({"inv_id": inv_id})
 
-        return jsonify(True, {"message": message, "inventory id": inv_id})
+        return jsonify({"code": True, "message": message, "inventory id": inv_id})
     else:
-        return jsonify(True)
+        return jsonify({"code": False, "message": "Expected POST request"})
 
 
 def check_password(password):
+    """
+    8 characters long
+    one digit
+    one special character
+    """
     if len(password) < 8:
         return False
     digits = 0
@@ -300,7 +305,7 @@ def billingCheckout():
             message.append(
                 f"Phone Number Missing, Customer ID = {customer_id}")
             phone = None
-
+        # check if it is a new customer
         name = postData["name"] if "name" in postData else ""
         wishlist = postData["wishlist"] if "wishlist" in postData else []
         location = postData["location"] if "location" in postData else ""
