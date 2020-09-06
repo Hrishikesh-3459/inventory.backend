@@ -1,0 +1,24 @@
+Process of customer buying goods
+(Customer end) shop -> pick your product -> bill -> checkout
+(Shopkeeper end) picked product is billed -> inventory update(decrement) after payment -> bill print (payment)
+
+Process of shopkeeper stocking up
+(Shopkeeper end) wholesaler -> acknowledgement (Invoice details) -> inventory update(increment)
+
+Database(Postgres):
+Stocking --> serial number, product id, quantity, Invoice price, stocking date, invoice # process of buying from wholeseller
+Product --> product id, product name, image_link, MRP price, # all the info about a product
+Selling --> customer id, product id, quantity, total Bill amount, selling_date # billing table (invoince generating)
+Pre-order --> serial number, product id, quantity, customer id # laake rakho bhaiya
+customer --> customer id, name, phone # future contacts
+inventory --> product id, quantity #literally inventory
+shopkeeper --> shopkeeper id, username, passowrd, phone
+
+backend -> python(Flask)
+frontend -> React
+
+
+`````````````
+TODO:
+- Create "/scanproduct"
+- Create a dynamic billing layout, and make a plan to connect it to 
